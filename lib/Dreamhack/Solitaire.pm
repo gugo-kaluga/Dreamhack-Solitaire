@@ -6,9 +6,9 @@ use warnings;
 use List::Util qw(shuffle);
 use List::MoreUtils 0.413 qw(uniq singleton);
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
-our @suits = ('s','c','d','h');
+our @suits   = ('s','c','d','h');
 our @valence = ('A','K','Q','J','10','9','8','7','6');
 
 sub new {
@@ -17,14 +17,21 @@ sub new {
     my @check = ();
     my @errors = ();
 
-    if (exists $args{'suits'} && (ref $args{'suits'} eq 'ARRAY')) {
-        @suits = @{$args{'suits'}}
+    if (exists $args{'lang'} && exists $args{'suits'} && exists $args{'valence'}) {
+        die 'Excess parameter: lang';
     }
     elsif (exists $args{'lang'}) {
         if (lc($args{'lang'}) eq 'ru_ru.utf8') {
-            @suits = ('п','к','б','ч');
+            @suits   = ('п','к','б','ч');
             @valence = ('Т','К','Д','В','10','9','8','7','6');
         }
+        else {
+            die 'Bad parameter value: lang';
+        }
+    }
+
+    if (exists $args{'suits'} && (ref $args{'suits'} eq 'ARRAY')) {
+        @suits = @{$args{'suits'}}
     }
 
     @check = uniq @suits;
